@@ -1,4 +1,4 @@
-# Blogs-mela 📝
+# Blogs-mela 📝 (on going)
 Blogs-mela is a full-stack blogging platform built using the MERN stack (MongoDB, Express, React, Node.js).
 It allows users to create, publish, and manage blog posts with secure authentication and image upload support.
 
