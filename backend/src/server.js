@@ -14,7 +14,7 @@ app.use(express.json());
 connectDB();
 
 app.get('/', (req, res) => {
-  res.send('SERVER is running...');
+  res.send('Blogs SERVER is running...');
 });
 
 app.use('/api/v1/blogs', blogRoutes);
