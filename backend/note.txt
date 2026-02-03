@@ -1,0 +1,11 @@
+backend/
+│── node_modules/
+│── .env
+│── package.json
+│── src
+    │── models
+    │── routes
+    │── controllers
+    │── configs
+        │──database.config.js
+    │── server.js
