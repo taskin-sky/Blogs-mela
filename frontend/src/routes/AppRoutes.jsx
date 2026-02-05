@@ -6,6 +6,7 @@ import AboutPage from '../pages/AboutPage';
 import ContactPage from '../pages/ContactPage';
 import MainLayout from '../layouts/MainLayout';
 import BlogDetailsPage from '../pages/BlogDetailsPage';
+import CreateBlogPage from '../pages/CreateBlogPage';
 
 function AppRoutes() {
   return (
@@ -14,6 +15,7 @@ function AppRoutes() {
         <Route index element={<HomePage />} />
         <Route path="blogs" element={<BlogsPage />} />
         <Route path="blogs/:blogId" element={<BlogDetailsPage />} />
+        <Route path="create-blog" element={<CreateBlogPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="contact" element={<ContactPage />} />
       </Route>
