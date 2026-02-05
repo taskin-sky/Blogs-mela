@@ -7,7 +7,7 @@ const CreateBlogPage = () => {
     category: '',
     description: '',
     shortDescription: '',
-    author: 'Admin',
+    author: 'Taskin',
     publishedAt: new Date().toISOString().split('T')[0],
   });
 
@@ -44,8 +44,8 @@ const CreateBlogPage = () => {
         publishedAt: formData.publishedAt,
       };
 
-      console.log('Blog data object:', blogData);
-      console.log('Blog data stringified:', JSON.stringify(blogData));
+      // console.log('Blog data object:', blogData);
+      // console.log('Blog data stringified:', JSON.stringify(blogData));
 
       submitData.append('data', JSON.stringify(blogData));
 
@@ -54,12 +54,12 @@ const CreateBlogPage = () => {
       }
 
       // Log all FormData entries
-      console.log('FormData entries:');
-      for (let pair of submitData.entries()) {
-        console.log(`${pair[0]}: ${pair[1]}`);
-      }
+      // console.log('FormData entries:');
+      // for (let pair of submitData.entries()) {
+      //   console.log(`${pair[0]}: ${pair[1]}`);
+      // }
 
-      console.log('Sending request to backend...');
+      // console.log('Sending request to backend...');
       await createBlogAPI({ data: submitData });
 
       alert('Blog created successfully!');
@@ -83,7 +83,7 @@ const CreateBlogPage = () => {
       category: '',
       description: '',
       shortDescription: '',
-      author: 'Admin',
+      author: 'Taskin',
       publishedAt: new Date().toISOString().split('T')[0],
     });
     setImage(null);
