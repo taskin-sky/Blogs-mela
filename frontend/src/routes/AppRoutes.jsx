@@ -7,6 +7,10 @@ import ContactPage from '../pages/ContactPage';
 import MainLayout from '../layouts/MainLayout';
 import BlogDetailsPage from '../pages/BlogDetailsPage';
 import CreateBlogPage from '../pages/CreateBlogPage';
+import LoginPage from '../pages/LoginPage';
+import SignUpPage from '../pages/SignUpPage';
+import TermsAndServicePage from '../pages/TermsandServicePage';
+import PrivacyPolicyPage from '../pages/PrivacyPolicyPage';
 
 function AppRoutes() {
   return (
@@ -18,6 +22,11 @@ function AppRoutes() {
         <Route path="create-blog" element={<CreateBlogPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<SignUpPage />} />
+        <Route path="terms" element={<TermsAndServicePage />} />
+
+        <Route path="privacy" element={<PrivacyPolicyPage />} />
       </Route>
     </Routes>
   );

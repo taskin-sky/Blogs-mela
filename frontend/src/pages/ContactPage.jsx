@@ -12,19 +12,20 @@ import {
   Twitter,
   Calendar,
 } from 'lucide-react';
+import { createContactAPI } from '../lib/api/contact.api';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    fullName: '',
     email: '',
     subject: '',
     message: '',
   });
 
-  const [formStatus, setFormStatus] = useState({
-    submitted: false,
-    error: false,
-    message: '',
+  const [status, setStatus] = useState({
+    loading: false,
+    success: false,
+    error: null,
   });
 
   const handleChange = (e) => {
@@ -35,56 +36,34 @@ const ContactPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus({ loading: true, success: false, error: null });
 
-    // Client-side validation
-    if (!formData.name || !formData.email || !formData.message) {
-      setFormStatus({
-        submitted: false,
-        error: true,
-        message: 'Please fill in all required fields',
+    try {
+      // Note: Passing data inside an object as expected by your API function
+      await createContactAPI({ data: formData });
+
+      setStatus({ loading: false, success: true, error: null });
+      setFormData({ fullName: '', email: '', subject: '', message: '' }); // Reset form
+    } catch (err) {
+      setStatus({
+        loading: false,
+        success: false,
+        error:
+          err.response?.data?.message ||
+          'Something went wrong. Please try again.',
       });
-      return;
     }
-
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      setFormStatus({
-        submitted: false,
-        error: true,
-        message: 'Please enter a valid email address',
-      });
-      return;
-    }
-
-    // Simulate form submission (no backend)
-    console.log('Form submitted:', formData);
-
-    // Show success message
-    setFormStatus({
-      submitted: true,
-      error: false,
-      message: "Message sent successfully! I'll get back to you soon.",
-    });
-
-    // Reset form after 2 seconds
-    setTimeout(() => {
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-      });
-    }, 2000);
   };
 
   const contactInfo = {
     name: 'Taskin',
     role: 'Tech Blogger & Developer',
-    email: 'taskin@example.com',
-    phone: '+1 (555) 123-4567',
-    location: 'San Francisco, CA',
-    workingHours: 'Mon-Fri, 9:00 AM - 6:00 PM PST',
+    email: 'blog-mela@gmail.com',
+    phone: '+880 1737 778252',
+    location: 'Rajshahi, Bangladesh',
+    workingHours: 'Sun-Thurs, 9:00 AM - 6:00 PM BST',
     bio: 'Passionate about demystifying technology through clear, engaging content. Always open to discussing tech trends, collaboration opportunities, or your latest project ideas.',
   };
 
@@ -119,9 +98,9 @@ const ContactPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-linear-to-b from-gray-50 to-white">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-700">
+      <div className="bg-linear-to-r from-indigo-600 to-purple-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -136,6 +115,7 @@ const ContactPage = () => {
       </div>
 
       {/* Main Content */}
+      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Left Column - Contact Info */}
@@ -143,8 +123,19 @@ const ContactPage = () => {
             {/* Profile Card */}
             <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
               <div className="text-center mb-6">
-                <div className="w-32 h-32 mx-auto mb-4 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center">
-                  <div className="text-4xl font-bold text-indigo-600">T</div>
+                <div className="w-32 h-32 mx-auto mb-4 bg-linear-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-md">
+                  {/* If image exists, it will be a perfect circle */}
+                  <img
+                    src="/taskin.png"
+                    alt="Taskin"
+                    className="w-full h-full object-cover"
+                    onError={(e) => (e.target.style.display = 'none')} // Optional: hides broken img tag
+                  />
+
+                  {/* Fallback Initial (Only shows if image fails or isn't there) */}
+                  <span className="absolute text-4xl font-bold text-indigo-600 -z-10">
+                    T
+                  </span>
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900">
                   {contactInfo.name}
@@ -229,7 +220,7 @@ const ContactPage = () => {
             </div>
 
             {/* Quick Topics */}
-            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-6">
+            <div className="bg-linear-to-r from-indigo-50 to-purple-50 rounded-2xl p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <MessageSquare className="w-5 h-5 mr-2" />
                 Common Topics
@@ -264,50 +255,93 @@ const ContactPage = () => {
               </div>
 
               {/* Status Message */}
-              {formStatus.message && (
+              {status.message && (
                 <div
                   className={`mb-6 p-4 rounded-lg ${
-                    formStatus.error
+                    status.error
                       ? 'bg-red-50 text-red-800 border border-red-200'
                       : 'bg-green-50 text-green-800 border border-green-200'
                   }`}
                 >
                   <div className="flex items-center">
-                    {formStatus.submitted ? (
+                    {status.submitted ? (
                       <CheckCircle className="w-5 h-5 mr-2" />
                     ) : null}
-                    {formStatus.message}
+                    {status.message}
+                  </div>
+                </div>
+              )}
+              {/* Success Message */}
+              {status.success && (
+                <div className="flex items-center p-4 mb-6 text-green-800 border-l-4 border-green-500 bg-green-50 rounded-r-xl shadow-sm animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="shrink-0">
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-bold uppercase tracking-wide">
+                      Success
+                    </p>
+                    <p className="text-sm opacity-90">
+                      Message sent successfully! I'll get back to you soon.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Error Message */}
+              {status.error && (
+                <div className="flex items-center p-4 mb-6 text-red-800 border-l-4 border-red-500 bg-red-50 rounded-r-xl shadow-sm animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="shrink-0">
+                    <svg
+                      className="w-5 h-5 text-red-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-bold uppercase tracking-wide">
+                      Error
+                    </p>
+                    <p className="text-sm opacity-90">{status.error}</p>
                   </div>
                 </div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Full Name */}
+                  <div className="space-y-2">
                     <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      htmlFor="fullName"
+                      className="block text-sm font-semibold text-gray-700 ml-1"
                     >
-                      Full Name *
+                      Full Name <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
+                      id="fullName"
+                      name="fullName"
+                      value={formData.fullName}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                      placeholder="Your name"
                       required
+                      placeholder="Enter your full name"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white outline-none transition duration-200"
                     />
                   </div>
 
-                  <div>
+                  {/* Email Address */}
+                  <div className="space-y-2">
                     <label
                       htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-sm font-semibold text-gray-700 ml-1"
                     >
-                      Email Address *
+                      Email Address <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="email"
@@ -315,17 +349,18 @@ const ContactPage = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                      placeholder="you@example.com"
                       required
+                      placeholder="name@company.com"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white outline-none transition duration-200"
                     />
                   </div>
                 </div>
 
-                <div>
+                {/* Subject */}
+                <div className="space-y-2">
                   <label
                     htmlFor="subject"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-semibold text-gray-700 ml-1"
                   >
                     Subject
                   </label>
@@ -335,45 +370,46 @@ const ContactPage = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                    placeholder="What would you like to discuss?"
+                    placeholder="How can we help you?"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white outline-none transition duration-200"
                   />
                 </div>
 
-                <div>
+                {/* Message */}
+                <div className="space-y-2">
                   <label
                     htmlFor="message"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-semibold text-gray-700 ml-1"
                   >
-                    Message *
+                    Message <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     id="message"
                     name="message"
+                    rows="5"
                     value={formData.message}
                     onChange={handleChange}
-                    rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors resize-none"
-                    placeholder="Tell me about your project, question, or idea..."
                     required
-                  />
+                    placeholder="Type your message here..."
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white outline-none transition duration-200 resize-none"
+                  ></textarea>
                 </div>
 
-                <div className="flex items-center justify-between pt-4">
-                  <div className="text-sm text-gray-500">* Required fields</div>
+                {/* Submit Button */}
+                <div className="pt-4">
                   <button
                     type="submit"
-                    disabled={formStatus.submitted}
-                    className={`flex items-center px-8 py-3 rounded-lg font-medium transition-colors ${
-                      formStatus.submitted
-                        ? 'bg-green-600 text-white'
-                        : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700'
+                    disabled={status.loading}
+                    className={`w-full flex items-center justify-center py-4 px-6 rounded-xl text-white font-bold text-lg shadow-lg transition duration-300 transform active:scale-95 ${
+                      status.loading
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-linear-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 hover:shadow-blue-500/25'
                     }`}
                   >
-                    {formStatus.submitted ? (
+                    {status.loading ? (
                       <>
-                        <CheckCircle className="w-5 h-5 mr-2" />
-                        Sent!
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Sending...
                       </>
                     ) : (
                       <>
@@ -431,7 +467,7 @@ const ContactPage = () => {
             </div>
 
             {/* Alternative Contact Methods */}
-            <div className="mt-8 bg-gradient-to-r from-gray-900 to-black rounded-2xl p-8 text-white">
+            <div className="mt-8 bg-linear-to-r from-gray-900 to-black rounded-2xl p-8 text-white">
               <h3 className="text-xl font-bold mb-4">Prefer Another Method?</h3>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>

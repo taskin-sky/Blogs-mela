@@ -98,14 +98,14 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-linear-to-b from-gray-50 to-white">
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700">
+      <div className="relative overflow-hidden bg-linear-to-r from-blue-600 to-indigo-700">
         <div className="absolute inset-0 bg-black opacity-20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              About Tech<span className="text-blue-300">Insight</span>
+              About Blogs<span className="text-blue-300"> Mela</span>
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto">
               We demystify technology and explore how it's shaping our future,
@@ -123,7 +123,7 @@ const AboutPage = () => {
               Our Mission
             </h2>
             <p className="text-lg text-gray-600 mb-4">
-              Founded in 2020, TechInsight began as a small blog with a big
+              Founded in 2020, Blogs-Mela began as a small blog with a big
               vision: to bridge the gap between complex technological
               advancements and everyday understanding.
             </p>
@@ -145,7 +145,7 @@ const AboutPage = () => {
               </div>
             </div>
           </div>
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl">
+          <div className="bg-linear-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl">
             <div className="grid grid-cols-2 gap-6">
               {stats.map((stat, index) => (
                 <div
@@ -245,7 +245,7 @@ const AboutPage = () => {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 py-16">
+      <div className="bg-linear-to-r from-blue-600 to-indigo-700 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-6">
             Join Our Tech Community
