@@ -18,20 +18,21 @@ const AboutPage = () => {
   const teamMembers = [
     {
       id: 1,
-      name: 'Mishbah Khan',
-      role: 'Founder & CEO',
-      bio: 'Former Tech Lead at Google, passionate about making tech accessible.',
-      image: '../../public/mishba 2.png',
-      social: { linkedin: '#', twitter: '#' },
-    },
-    {
-      id: 2,
       name: 'Taskin M. Mubassir',
       role: 'Founder & CEO',
       bio: 'Former Tech Lead at Google, passionate about making tech accessible.',
       image: '../../public/taskin.png',
       social: { linkedin: '#', twitter: '#' },
     },
+    {
+      id: 2,
+      name: 'Mishbah Khan',
+      role: 'Founder & CEO',
+      bio: 'Former Tech Lead at Google, passionate about making tech accessible.',
+      image: '../../public/mishba 2.png',
+      social: { linkedin: '#', twitter: '#' },
+    },
+    
     {
       id: 3,
       name: 'Mobin',

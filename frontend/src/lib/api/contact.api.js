@@ -9,3 +9,8 @@ export const createContactAPI = async ({ data }) => {
     throw error;
   }
 };
+
+export const getAllContactMessageAPI = async () => {
+  const response = await axios_instance.get('/show-contact');
+  return response.data;
+};

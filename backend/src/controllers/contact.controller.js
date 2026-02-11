@@ -31,8 +31,28 @@ const createContact = async (req, res, next) => {
   }
 };
 
+const showContact = async (req, res) => {
+  try {
+    const contactList = await Contact.find().sort({createdAt: -1});
+
+    res.status(200).json({
+      success: true,
+      message: " CONTACT LIST FETCHED SUCCESSFULLY",
+      message_count: contactList.length,
+      data: contactList,
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'FETCHING CONTACT LIST FAILED',
+      error: error.message,
+    });
+  }
+}
+
 const ContactController = {
   createContact,
+  showContact,
 };
 
 export default ContactController;

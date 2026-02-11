@@ -311,7 +311,7 @@ const HomePage = () => {
                   <div
                     key={blog._id}
                     className="group cursor-pointer"
-                    onClick={() => navigate(`/blog/${blog._id}`)}
+                    onClick={() => navigate(`/blogs/${blog._id}`)}
                   >
                     <div className="flex gap-3 items-start p-3 rounded-xl hover:bg-blue-50 transition-colors">
                       <div className="flex-1 min-w-0">

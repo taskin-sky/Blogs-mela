@@ -46,7 +46,7 @@ const LoginPage = () => {
       console.log('Login attempt:', formData);
       setLoading(false);
       // Navigate to home page on successful login
-      navigate('/');
+      navigate('/message');
     }, 1500);
   };
 

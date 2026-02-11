@@ -11,6 +11,8 @@ import {
   Github,
   Twitter,
   Calendar,
+  Loader,
+  Loader2,
 } from 'lucide-react';
 import { createContactAPI } from '../lib/api/contact.api';
 

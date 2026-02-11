@@ -11,6 +11,7 @@ import LoginPage from '../pages/LoginPage';
 import SignUpPage from '../pages/SignUpPage';
 import TermsAndServicePage from '../pages/TermsandServicePage';
 import PrivacyPolicyPage from '../pages/PrivacyPolicyPage';
+import ContactMessagePage from '../pages/ContactMessagePage';
 
 function AppRoutes() {
   return (
@@ -25,8 +26,9 @@ function AppRoutes() {
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<SignUpPage />} />
         <Route path="terms" element={<TermsAndServicePage />} />
-
         <Route path="privacy" element={<PrivacyPolicyPage />} />
+
+        <Route path="message" element={<ContactMessagePage />} />
       </Route>
     </Routes>
   );
