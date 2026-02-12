@@ -15,6 +15,9 @@ import {
   Edit,
   Tag,
 } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteBlogAPI } from '../../lib/api/blog.api';
+import toast from 'react-hot-toast';
 
 export const BlogCard = ({ blog, viewMode = 'grid' }) => {
   const [liked, setLiked] = useState(false);
@@ -29,6 +32,26 @@ export const BlogCard = ({ blog, viewMode = 'grid' }) => {
   };
 
   const readTime = calculateReadTime(blog.description || blog.shortDescription);
+
+  const queryClient = useQueryClient();
+
+  const deleteBlog = useMutation({
+    mutationFn: (blogId) => deleteBlogAPI({blogId}),
+    onSuccess: (response) => {
+      if(response.status === 200){
+        toast.success("Blog Deleted successfully");
+        queryClient.invalidateQueries({queryKey: ['blogs']});
+      }
+    },
+  });
+  
+  const handleDelete = (blogId) => {
+    const confirmation = confirm(`Are you sure you want to delete this blog? This action cannot be undone.\n\nBlog title: ${blog?.title}`);
+    
+    if(confirmation){
+      deleteBlog.mutate(blogId);
+    }
+  }
 
   // List View
   if (viewMode === 'list') {
@@ -295,7 +318,7 @@ export const BlogCard = ({ blog, viewMode = 'grid' }) => {
                   <Edit size={14} />
                   Edit Post
                 </button>
-                <button className="w-full px-4 py-2 text-left hover:bg-red-50 text-red-600 flex items-center gap-2 text-sm">
+                <button onClick={() => handleDelete(`${blog._id}`)} className="w-full px-4 py-2 text-left hover:bg-red-50 text-red-600 flex items-center gap-2 text-sm">
                   <Trash2 size={14} />
                   Delete Post
                 </button>
