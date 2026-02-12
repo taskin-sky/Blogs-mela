@@ -30,3 +30,9 @@ export const getBlogDetailsAPI = async ({ blogId }) => {
   const response = await axios_instance.get(`/single-blog/${blogId}`);
   return response.data.data;
 };
+
+export const deleteBlogAPI =  async ({blogId}) => {
+  const response = await axios_instance.delete(`/delete-blog/${blogId}`);
+  return response;
+}
+
